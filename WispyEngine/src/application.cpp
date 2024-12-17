@@ -84,7 +84,7 @@ void Application::Run(int target_fps) {
   log_.Append("[INFO] Starting game loop...");
 
   using clock = std::chrono::high_resolution_clock;
-  using std::chrono::nanoseconds;
+  using std::chrono::nanoseconds, std::chrono::milliseconds;
 
   constexpr int kOneBillion = 1000000000;
 
@@ -97,15 +97,26 @@ void Application::Run(int target_fps) {
   nanoseconds lag(0);
   float frame_delta_time = 0.0f;
 
+  milliseconds timer(0);
+  unsigned int frame_count = 0u;
+  unsigned int fps = 0u;
+
   MSG msg { 0 };
   msg.message = WM_NULL;
   while (msg.message != WM_QUIT) {
     curr_time = clock::now();
     delta_time = std::chrono::duration_cast<nanoseconds>(curr_time - start_time);
+    timer += std::chrono::duration_cast<milliseconds>(curr_time - start_time);
     start_time = curr_time;
 
     lag += delta_time;
     frame_delta_time += delta_time.count();
+
+    if (timer.count() > 1000) {
+      fps = frame_count;
+      frame_count = 0u;
+      timer = milliseconds(0);
+    }
 
     if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
       TranslateMessage(&msg);
@@ -119,14 +130,19 @@ void Application::Run(int target_fps) {
           adjust_to_update_ = true;
         }
 
+        frame_count++;
         frame_delta_time = 0;
       }
 
       graphics_.BeginDraw();
 
-      graphics_.Clear(D2D1::ColorF(0));
+      graphics_.Clear(D2D1::ColorF(0u));
 
       if (current_world_) HandleWorldGraphics();
+
+      WCHAR text[50] = L"FPS: ";
+      wcscat_s(text, std::to_wstring(fps).c_str());
+      graphics_.DrawBasicText(text, 0.0f, 0.0f, 150.0f, 30.0f);
 
       graphics_.EndDraw();
     }
@@ -166,6 +182,7 @@ void Application::ActivateFullscreen() const {
 }
 
 void Application::HandleInput(unsigned long long key, bool is_down) {
+  if (!current_world_) return;
   switch (key) {
   case VK_LEFT:
     current_world_->GetInputManager().SetKeyDown(kLeft, is_down);

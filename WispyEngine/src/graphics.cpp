@@ -18,6 +18,10 @@ HRESULT Graphics::CreateGraphicsResources(HWND hwnd) {
 
   if (SUCCEEDED(hr)) hr = img_factory_.CoCreateInstance(CLSID_WICImagingFactory, NULL, CLSCTX_ALL);
 
+  if (SUCCEEDED(hr)) hr = DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED, __uuidof(IDWriteFactory), reinterpret_cast<IUnknown **>(&write_factory_));
+
+  if (SUCCEEDED(hr)) hr = write_factory_->CreateTextFormat(L"Arial", NULL, DWRITE_FONT_WEIGHT_REGULAR, DWRITE_FONT_STYLE_NORMAL, DWRITE_FONT_STRETCH_NORMAL, 18.0f, L"en-us", &text_format_);
+
   if (FAILED(hr)) MessageBoxEx(NULL, GetErrorMessage(hr), L"D2D1 Initialization Failed!", MB_ICONEXCLAMATION | MB_OK, MAKELANGID(LANG_NEUTRAL, SUBLANG_NEUTRAL));
 
   return hr;
@@ -67,6 +71,11 @@ void Graphics::DrawBitmap(const CComPtr<ID2D1Bitmap> &bitmap, float x, float y, 
   D2D1_RECT_F src_rect = D2D1::RectF(0, 0, bitmap->GetSize().width, bitmap->GetSize().height);
   D2D1_RECT_F dest_rect = D2D1::RectF(x, y, x + bitmap->GetSize().width * scale_x, y + bitmap->GetSize().height * scale_y);
   render_target_->DrawBitmap(bitmap, dest_rect, 1.0f, D2D1_BITMAP_INTERPOLATION_MODE_NEAREST_NEIGHBOR, src_rect);
+}
+
+void Graphics::DrawBasicText(LPCWSTR text, float x, float y, float width, float height) {
+  brush_->SetColor(D2D1::ColorF(1.0f, 1.0f, 1.0f));
+  render_target_->DrawTextW(text, static_cast<unsigned int>(wcslen(text)), text_format_, D2D1::RectF(x, y, x + width, y + height), brush_);
 }
 
 Graphics::CoInitializationRAII::CoInitializationRAII() {

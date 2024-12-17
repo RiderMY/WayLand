@@ -3,9 +3,11 @@
 #include <Windows.h>
 #include <atlbase.h>
 #include <d2d1.h>
+#include <dwrite.h>
 #include <wincodec.h>
 
-#pragma comment(lib, "d2d1.lib")
+#pragma comment(lib, "D2d1.lib")
+#pragma comment(lib, "Dwrite.lib")
 #pragma comment(lib, "WindowsCodecs.lib")
 
 namespace wispy {
@@ -27,6 +29,8 @@ public:
 
   CComPtr<ID2D1Bitmap> LoadBitmapFromFilename(LPCWSTR filename);
   void DrawBitmap(const CComPtr<ID2D1Bitmap> &bitmap, float x, float y, float scale_x, float scale_y);
+
+  void DrawBasicText(LPCWSTR text, float x, float y, float width, float height);
 
 private:
   inline LPCWSTR GetErrorMessage(HRESULT hr) {
@@ -52,6 +56,9 @@ private:
   CComPtr<IWICBitmapDecoder> decoder_;
   CComPtr<IWICBitmapFrameDecode> frame_;
   CComPtr<IWICFormatConverter> format_converter_;
+
+  CComPtr<IDWriteFactory> write_factory_;
+  CComPtr<IDWriteTextFormat> text_format_;
 };
 
 }
