@@ -10,7 +10,7 @@ public:
   SpriteRenderer(GameObject *parent);
   ~SpriteRenderer();
 
-  void Start() override;
+  void Start();
 
   void SetSprite(Sprite sprite);
   Sprite GetSprite() const;

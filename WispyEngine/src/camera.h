@@ -1,5 +1,7 @@
 #pragma once
 
+#include <functional>
+
 #include "ccs.h"
 #include "property.h"
 #include "sprite_renderer.h"
@@ -19,11 +21,17 @@ public:
   std::vector<std::pair<std::string, std::weak_ptr<unsigned int>>> GetSpriteBuffer();
   std::vector<CameraSpriteData> GetCameraSpriteDataStream();
 
+  unsigned int AddDebugDraw(std::function<void(DebugDrawer &)> debug_draw);
+  void RemoveDebugDraw(unsigned int debug_draw_id);
+  std::vector<DebugDrawer::DrawData> GetDebugDrawDataStream();
+
   void SetUnitSize(int size);
 
 private:
-  CCS<SpriteRenderer> renderers_;
+  CCS<std::weak_ptr<SpriteRenderer>> renderers_;
   std::vector<std::pair<std::string, std::weak_ptr<unsigned int>>> sprite_buffer_;
+
+  CCS<std::function<void(DebugDrawer &)>> debug_draws_;
 
   int unit_size_;
 };

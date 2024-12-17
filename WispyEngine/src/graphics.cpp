@@ -37,7 +37,7 @@ void Graphics::Clear(const D2D1_COLOR_F &color) {
 
 void Graphics::DrawRectangle(float x, float y, float width, float height, const D2D1_COLOR_F &color) {
   brush_->SetColor(color);
-  render_target_->DrawRectangle(D2D1::RectF(x, y, x + width, y + height), brush_);
+  render_target_->DrawRectangle(D2D1::RectF(x, y, x + width, y + height), brush_, 3.0f);
 }
 
 void Graphics::FillRectangle(float x, float y, float width, float height, const D2D1_COLOR_F &color) {

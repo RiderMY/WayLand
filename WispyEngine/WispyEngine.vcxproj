@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\debug_draw.h" />
     <ClInclude Include="src\log.h" />
     <ClInclude Include="src\application.h" />
     <ClInclude Include="src\camera.h" />
@@ -34,6 +35,7 @@
     <ClInclude Include="src\world.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\debug_draw.cpp" />
     <ClCompile Include="src\log.cpp" />
     <ClCompile Include="src\application.cpp" />
     <ClCompile Include="src\camera.cpp" />

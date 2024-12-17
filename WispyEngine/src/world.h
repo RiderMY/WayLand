@@ -12,12 +12,12 @@ public:
 
   virtual bool Update(float dt) = 0;
 
-  InputManager &GetInputManager();
   Camera &GetMainCamera();
+  InputManager &GetInputManager();
 
 private:
-  GameObject input_manager_;
   GameObject main_camera_;
+  GameObject input_manager_;
 };
 
 }

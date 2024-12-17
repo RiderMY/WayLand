@@ -45,6 +45,7 @@ private:
   std::vector<CameraSpriteData> camera_sprite_data_;
   bool adjust_to_update_;
   float scale_, fixed_w_, fixed_h_, dis_x_, dis_y_;
+  std::vector<DebugDrawer::DrawData> debug_draw_data_;
 
   std::unique_ptr<World> current_world_;
 };

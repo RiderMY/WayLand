@@ -17,6 +17,7 @@ public:
   template<typename T>
   void AddProperty() requires std::is_base_of_v<Property, T> {
     properties_.Add(std::make_shared<T>(this));
+    properties_.Get<T>().lock()->DoYoThang();
     properties_.Get<T>().lock()->Start();
   }
 

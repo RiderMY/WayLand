@@ -4,7 +4,7 @@
 
 namespace wispy {
 
-Camera::Camera(GameObject *parent) : Property(parent), renderers_(), sprite_buffer_(), unit_size_(1) { }
+Camera::Camera(GameObject *parent) : Property(parent), renderers_(), sprite_buffer_(), debug_draws_(), unit_size_(1) { }
 
 int Camera::AddRenderer(std::weak_ptr<SpriteRenderer> renderer) {
   return renderers_.Add(renderer);
@@ -52,6 +52,35 @@ std::vector<CameraSpriteData> Camera::GetCameraSpriteDataStream() {
         break;
       }
     }
+  }
+
+  return stream;
+}
+
+unsigned int Camera::AddDebugDraw(std::function<void(DebugDrawer &)> debug_draw) {
+  return debug_draws_.Add(debug_draw);
+}
+
+void Camera::RemoveDebugDraw(unsigned int debug_draw_id) {
+  debug_draws_.Remove(debug_draw_id);
+}
+
+std::vector<DebugDrawer::DrawData> Camera::GetDebugDrawDataStream() {
+  // Run All DebugDraws
+  DebugDrawer dd;
+
+  std::vector<std::function<void(DebugDrawer &)>> debug_draw_stream = debug_draws_.GetStream();
+
+  for (int i = 0; i < debug_draw_stream.size(); ++i) debug_draw_stream[i](dd);
+
+  // Transforming Data
+  std::vector<DebugDrawer::DrawData> stream = dd.GetDrawDataStream();
+
+  for (int i = 0; i < stream.size(); ++i) {
+    stream[i].x = (stream[i].x - GetPosition().x) * unit_size_;
+    stream[i].y = (stream[i].y - GetPosition().y) * unit_size_;
+    stream[i].width *= unit_size_;
+    stream[i].height *= unit_size_;
   }
 
   return stream;

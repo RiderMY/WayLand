@@ -203,14 +203,25 @@ void Application::HandleWorldGraphics() {
 
   if (adjust_to_update_) {
     camera_sprite_data_ = current_world_->GetMainCamera().GetCameraSpriteDataStream();
-    adjust_to_update_ = false;
   }
 
+  // Drawing Resolution-Scaled Window
   graphics_.FillRectangle(dis_x_, dis_y_, fixed_w_, fixed_h_, D2D1::ColorF(1.0f, 1.0f, 1.0f));
 
+  // Drawing Sprites
   for (int i = 0; i < camera_sprite_data_.size(); ++i) {
     if (camera_sprite_data_[i].sprite_id == 0u) continue;
     graphics_.DrawBitmap(bitmaps_[camera_sprite_data_[i].sprite_id - 1], camera_sprite_data_[i].x * scale_ + dis_x_, camera_sprite_data_[i].y * scale_ + dis_y_, static_cast<float>(scale_), static_cast<float>(scale_));
+  }
+
+  // Debug Draw
+  if (adjust_to_update_) {
+    debug_draw_data_ = current_world_->GetMainCamera().GetDebugDrawDataStream();
+    adjust_to_update_ = false;
+  }
+
+  for (int i = 0; i < debug_draw_data_.size(); ++i) {
+    graphics_.DrawRectangle(debug_draw_data_[i].x * scale_ + dis_x_, debug_draw_data_[i].y * scale_ + dis_y_, debug_draw_data_[i].width * scale_, debug_draw_data_[i].height * scale_, D2D1::ColorF(debug_draw_data_[i].color.r, debug_draw_data_[i].color.g, debug_draw_data_[i].color.b));
   }
 }
 

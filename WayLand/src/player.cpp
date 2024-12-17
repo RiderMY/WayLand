@@ -13,6 +13,10 @@ void Player::Update(float dt) {
     velocity /= sqrtf(velocity.x * velocity.x + velocity.y * velocity.y);
     velocity *= 5 * dt;
 
-    GetGameObject()->SetPosition(GetGameObject()->GetPosition() + velocity);
+    SetPosition(GetPosition() + velocity);
   }
+}
+
+void Player::DebugDraw(wispy::DebugDrawer &dd) {
+  dd.DrawRect(4.0f, 3.0f, 1.0f, 4.0f, { 1.0f, 0.0f, 0.0f });
 }
