@@ -19,4 +19,5 @@ void Player::Update(float dt) {
 
 void Player::DebugDraw(wispy::DebugDrawer &dd) {
   dd.DrawRect(4.0f, 3.0f, 1.0f, 4.0f, { 1.0f, 0.0f, 0.0f });
+  dd.DrawCircle(10.0f, 6.0f, 0.5f, { 0.0f, 1.0f, 0.0f });
 }

@@ -14,7 +14,11 @@ HRESULT Graphics::CreateGraphicsResources(HWND hwnd) {
     hr = factory_->CreateHwndRenderTarget(D2D1::RenderTargetProperties(), D2D1::HwndRenderTargetProperties(hwnd, size), &render_target_);
   }
 
-  if (SUCCEEDED(hr)) hr = render_target_->CreateSolidColorBrush(D2D1::ColorF(0, 0, 0), &brush_);
+  if (SUCCEEDED(hr)) {
+    render_target_->SetAntialiasMode(D2D1_ANTIALIAS_MODE_ALIASED); // Turning Off Anti-Aliasing
+
+    hr = render_target_->CreateSolidColorBrush(D2D1::ColorF(0, 0, 0), &brush_);
+  }
 
   if (SUCCEEDED(hr)) hr = img_factory_.CoCreateInstance(CLSID_WICImagingFactory, NULL, CLSCTX_ALL);
 
@@ -48,6 +52,12 @@ void Graphics::FillRectangle(float x, float y, float width, float height, const 
   brush_->SetColor(color);
   render_target_->FillRectangle(D2D1::RectF(x, y, x + width, y + height), brush_);
 }
+
+void Graphics::DrawEllipse(float x, float y, float radius_x, float radius_y, const D2D1_COLOR_F &color) {
+  brush_->SetColor(color);
+  render_target_->DrawEllipse(D2D1::Ellipse(D2D1::Point2(x, y), radius_x, radius_y), brush_, 3.0f);
+}
+
 
 CComPtr<ID2D1Bitmap> Graphics::LoadBitmapFromFilename(LPCWSTR filename) {
   CComPtr<ID2D1Bitmap> bitmap;

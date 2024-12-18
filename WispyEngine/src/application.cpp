@@ -209,7 +209,6 @@ void Application::HandleWorldGraphics() {
       bitmaps_.push_back(bitmap);
       if (!sprite.second.expired()) *sprite.second.lock() = static_cast<unsigned int>(bitmaps_.size());
       else {
-        // TODO: HANDLE ERROR (Get to make these for other weak pointer lock situations like in GameObject.)
         log_.Append("[ERROR] ID assignment to sprite for " + sprite.first + " failed!");
         bitmaps_.erase(bitmaps_.end());
       }
@@ -238,7 +237,14 @@ void Application::HandleWorldGraphics() {
   }
 
   for (int i = 0; i < debug_draw_data_.size(); ++i) {
-    graphics_.DrawRectangle(debug_draw_data_[i].x * scale_ + dis_x_, debug_draw_data_[i].y * scale_ + dis_y_, debug_draw_data_[i].width * scale_, debug_draw_data_[i].height * scale_, D2D1::ColorF(debug_draw_data_[i].color.r, debug_draw_data_[i].color.g, debug_draw_data_[i].color.b));
+    switch (debug_draw_data_[i].draw_type) {
+    case DebugDrawer::DrawData::DrawType::kRect:
+      graphics_.DrawRectangle(debug_draw_data_[i].x * scale_ + dis_x_, debug_draw_data_[i].y * scale_ + dis_y_, debug_draw_data_[i].width * scale_, debug_draw_data_[i].height * scale_, D2D1::ColorF(debug_draw_data_[i].color.r, debug_draw_data_[i].color.g, debug_draw_data_[i].color.b));
+      break;
+    case DebugDrawer::DrawData::DrawType::kCircle:
+      graphics_.DrawEllipse(debug_draw_data_[i].x * scale_ + dis_x_, debug_draw_data_[i].y * scale_ + dis_y_, debug_draw_data_[i].radius * scale_, debug_draw_data_[i].radius * scale_, D2D1::ColorF(debug_draw_data_[i].color.r, debug_draw_data_[i].color.g, debug_draw_data_[i].color.b));
+      break;
+    }
   }
 }
 

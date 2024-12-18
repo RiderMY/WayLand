@@ -27,6 +27,8 @@ public:
   void DrawRectangle(float x, float y, float width, float height, const D2D1_COLOR_F &color);
   void FillRectangle(float x, float y, float width, float height, const D2D1_COLOR_F &color);
 
+  void DrawEllipse(float x, float y, float radius_x, float radius_y, const D2D1_COLOR_F &color);
+
   CComPtr<ID2D1Bitmap> LoadBitmapFromFilename(LPCWSTR filename);
   void DrawBitmap(const CComPtr<ID2D1Bitmap> &bitmap, float x, float y, float scale_x, float scale_y);
 

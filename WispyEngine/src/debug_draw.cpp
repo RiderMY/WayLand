@@ -8,7 +8,19 @@ void DebugDrawer::DrawRect(float x, float y, float width, float height, Color co
   DrawData draw_data = { 0 };
 
   draw_data.x = x, draw_data.y = y;
+  draw_data.draw_type = DrawData::DrawType::kRect;
   draw_data.width = width, draw_data.height = height;
+  draw_data.color = color;
+
+  draw_data_stream_.push_back(draw_data);
+}
+
+void DebugDrawer::DrawCircle(float x, float y, float radius, Color color) {
+  DrawData draw_data = { 0 };
+
+  draw_data.x = x, draw_data.y = y;
+  draw_data.draw_type = DrawData::DrawType::kCircle;
+  draw_data.radius = radius;
   draw_data.color = color;
 
   draw_data_stream_.push_back(draw_data);
