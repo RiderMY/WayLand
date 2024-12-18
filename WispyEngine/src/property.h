@@ -30,6 +30,8 @@ private:
   GameObject *game_object_;
 
   unsigned int debug_draw_id_;
+  bool need_cleanup_;
+  bool is_camera_;
 };
 
 }
