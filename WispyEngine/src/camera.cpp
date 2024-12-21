@@ -14,10 +14,13 @@ void Camera::RemoveRenderer(unsigned int renderer_id) {
   renderers_.Remove(renderer_id);
 }
 
-Sprite Camera::RegisterSprite(std::string filename) {
+Sprite Camera::RegisterSprite(std::string filename, unsigned int slices_x, unsigned int slices_y) {
   Sprite sprite;
 
   sprite_buffer_.push_back({ filename, sprite.sprite_id });
+
+  sprite.slices_x = slices_x;
+  sprite.slices_y = slices_y;
 
   return sprite;
 }
@@ -39,18 +42,26 @@ std::vector<CameraSpriteData> Camera::GetCameraSpriteDataStream() {
   // Sort Data by Order (Least to Greatest)
   CameraSpriteData data = { 0 };
   for (int i = 0; i < renderer_stream.size(); ++i) {
-    Vec2 position = renderer_stream[i].lock()->GetGameObject()->GetPosition() - GetGameObject()->GetPosition();
-    data.x = position.x * unit_size_;
-    data.y = position.y * unit_size_;
-    data.order = renderer_stream[i].lock()->GetOrder();
-    data.sprite_id = *renderer_stream[i].lock()->GetSprite().sprite_id;
+    if (auto renderer = renderer_stream[i].lock()) {
+      Vec2 position = renderer->GetGameObject()->GetPosition() - GetGameObject()->GetPosition();
+      data.x = position.x * unit_size_;
+      data.y = position.y * unit_size_;
+      data.order = renderer->GetOrder();
+      data.sprite_id = *renderer->GetSprite().sprite_id;
+      data.slices_x = renderer->GetSprite().slices_x;
+      data.slices_y = renderer->GetSprite().slices_y;
+      data.index_x = renderer->GetSprite().index_x;
+      data.index_y = renderer->GetSprite().index_y;
 
-    for (int j = 0; j < i + 1; ++j) {
-      if (j == i) stream.push_back(data);
-      else if (data.order < stream[j].order) {
-        stream.insert(stream.begin() + j, data);
-        break;
+      for (int j = 0; j < i + 1; ++j) {
+        if (j == i) stream.push_back(data);
+        else if (data.order < stream[j].order) {
+          stream.insert(stream.begin() + j, data);
+          break;
+        }
       }
+    } else {
+      // TODO: HANDLE ERROR
     }
   }
 
@@ -86,7 +97,7 @@ std::vector<DebugDrawer::DrawData> Camera::GetDebugDrawDataStream() {
   return stream;
 }
 
-void Camera::SetUnitSize(int size) {
+void Camera::SetUnitSize(unsigned int size) {
   unit_size_ = size;
 }
 

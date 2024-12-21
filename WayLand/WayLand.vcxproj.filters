@@ -37,5 +37,8 @@
     <Image Include="src\test_img.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="src\test_tilemap.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

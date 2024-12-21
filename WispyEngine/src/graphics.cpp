@@ -62,24 +62,30 @@ void Graphics::DrawEllipse(float x, float y, float radius_x, float radius_y, con
 CComPtr<ID2D1Bitmap> Graphics::LoadBitmapFromFilename(LPCWSTR filename) {
   CComPtr<ID2D1Bitmap> bitmap;
 
-  HRESULT hr = img_factory_->CreateDecoderFromFilename(filename, NULL, GENERIC_READ, WICDecodeMetadataCacheOnLoad, &decoder_);
+  CComPtr<IWICBitmapDecoder> decoder;
+  CComPtr<IWICBitmapFrameDecode> frame;
+  CComPtr<IWICFormatConverter> format_converter;
 
-  if (SUCCEEDED(hr)) hr = decoder_->GetFrame(0, &frame_);
+  HRESULT hr = img_factory_->CreateDecoderFromFilename(filename, NULL, GENERIC_READ, WICDecodeMetadataCacheOnLoad, &decoder);
 
-  if (SUCCEEDED(hr)) hr = img_factory_->CreateFormatConverter(&format_converter_);
+  if (SUCCEEDED(hr)) hr = decoder->GetFrame(0, &frame);
 
-  if (SUCCEEDED(hr)) hr = format_converter_->Initialize(frame_, GUID_WICPixelFormat32bppPBGRA, WICBitmapDitherTypeNone, NULL, 0.0, WICBitmapPaletteTypeCustom);
+  if (SUCCEEDED(hr)) hr = img_factory_->CreateFormatConverter(&format_converter);
 
-  if (SUCCEEDED(hr)) hr = render_target_->CreateBitmapFromWicBitmap(format_converter_, NULL, &bitmap);
+  if (SUCCEEDED(hr)) hr = format_converter->Initialize(frame, GUID_WICPixelFormat32bppPBGRA, WICBitmapDitherTypeNone, NULL, 0.0, WICBitmapPaletteTypeCustom);
+
+  if (SUCCEEDED(hr)) hr = render_target_->CreateBitmapFromWicBitmap(format_converter, NULL, &bitmap);
 
   if (FAILED(hr)) MessageBoxEx(NULL, GetErrorMessage(hr), L"Bitmap Creation Failed!", MB_ICONEXCLAMATION | MB_OK, MAKELANGID(LANG_NEUTRAL, SUBLANG_NEUTRAL));
 
   return bitmap;
 }
 
-void Graphics::DrawBitmap(const CComPtr<ID2D1Bitmap> &bitmap, float x, float y, float scale_x, float scale_y) {
-  D2D1_RECT_F src_rect = D2D1::RectF(0, 0, bitmap->GetSize().width, bitmap->GetSize().height);
-  D2D1_RECT_F dest_rect = D2D1::RectF(x, y, x + bitmap->GetSize().width * scale_x, y + bitmap->GetSize().height * scale_y);
+void Graphics::DrawBitmap(const CComPtr<ID2D1Bitmap> &bitmap, float x, float y, float scale_x, float scale_y, unsigned int slices_x, unsigned int slices_y, unsigned int index_x, unsigned int index_y) {
+  float src_width = bitmap->GetSize().width / (slices_x + 1u), src_height = bitmap->GetSize().height / (slices_y + 1u);
+  float src_x = index_x * src_width, src_y = index_y * src_height;
+  D2D1_RECT_F src_rect = D2D1::RectF(src_x, src_y, src_x + src_width, src_y + src_height);
+  D2D1_RECT_F dest_rect = D2D1::RectF(x, y, x + src_width * scale_x, y + src_height * scale_y);
   render_target_->DrawBitmap(bitmap, dest_rect, 1.0f, D2D1_BITMAP_INTERPOLATION_MODE_NEAREST_NEIGHBOR, src_rect);
 }
 

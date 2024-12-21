@@ -30,7 +30,7 @@ public:
   void DrawEllipse(float x, float y, float radius_x, float radius_y, const D2D1_COLOR_F &color);
 
   CComPtr<ID2D1Bitmap> LoadBitmapFromFilename(LPCWSTR filename);
-  void DrawBitmap(const CComPtr<ID2D1Bitmap> &bitmap, float x, float y, float scale_x, float scale_y);
+  void DrawBitmap(const CComPtr<ID2D1Bitmap> &bitmap, float x, float y, float scale_x, float scale_y, unsigned int slices_x, unsigned int slices_y, unsigned int index_x, unsigned int index_y);
 
   void DrawBasicText(LPCWSTR text, float x, float y, float width, float height);
 
@@ -55,9 +55,6 @@ private:
   CComPtr<ID2D1SolidColorBrush> brush_;
 
   CComPtr<IWICImagingFactory> img_factory_;
-  CComPtr<IWICBitmapDecoder> decoder_;
-  CComPtr<IWICBitmapFrameDecode> frame_;
-  CComPtr<IWICFormatConverter> format_converter_;
 
   CComPtr<IDWriteFactory> write_factory_;
   CComPtr<IDWriteTextFormat> text_format_;

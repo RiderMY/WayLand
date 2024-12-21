@@ -4,18 +4,20 @@
 
 #include "player.h"
 
-MyWorld::MyWorld() : sprite_(), player_(this, wispy::Vec2(0.0f, 0.0f)), object_(this, wispy::Vec2(1.0f, 0.0f)) {
-  sprite_ = GetMainCamera().RegisterSprite("src/test_img.png");
-
+MyWorld::MyWorld() : player_sprite_(), object_sprite_(), player_(this, wispy::Vec2(0.0f, 0.0f)), object_(this, wispy::Vec2(1.0f, 0.0f)) {
+  player_sprite_ = GetMainCamera().RegisterSprite("src/test_img.png");
   player_.AddProperty<wispy::SpriteRenderer>();
   player_.GetProperty<wispy::SpriteRenderer>().SetOrder(1);
-  player_.GetProperty<wispy::SpriteRenderer>().SetSprite(sprite_);
+  player_.GetProperty<wispy::SpriteRenderer>().SetSprite(player_sprite_);
   player_.AddProperty<Player>();
 
+  object_sprite_ = GetMainCamera().RegisterSprite("src/test_tilemap.png", 1u, 1u);
+  object_sprite_.index_x = 0u, object_sprite_.index_y = 0u;
   object_.AddProperty<wispy::SpriteRenderer>();
-  object_.GetProperty<wispy::SpriteRenderer>().SetSprite(sprite_);
+  object_.GetProperty<wispy::SpriteRenderer>().SetOrder(0);
+  object_.GetProperty<wispy::SpriteRenderer>().SetSprite(object_sprite_);
 
-  GetMainCamera().SetUnitSize(16);
+  GetMainCamera().SetUnitSize(16u);
 }
 
 bool MyWorld::Update(float dt) {
