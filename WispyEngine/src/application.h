@@ -12,10 +12,10 @@ namespace wispy {
 
 class Application {
 public:
-  Application(LPCWSTR name, int resolution_width, int resolution_height);
+  Application(LPCWSTR name, unsigned int resolution_width, unsigned int resolution_height);
   ~Application();
 
-  void Run(int target_fps);
+  void Run(unsigned int target_fps);
 
   template <typename T>
   void SetCurrentWorld() requires std::is_base_of_v<World, T> {

@@ -6,7 +6,7 @@ namespace wispy {
 
 std::unordered_map<HWND, Application *> Application::finder_;
 
-Application::Application(LPCWSTR name, int resolution_width, int resolution_height) : hwnd_(NULL), is_bad_(false), log_(), graphics_(), bitmaps_(), camera_sprite_data_(), adjust_to_update_(true), scale_(0.0f), fixed_w_(0.0f), fixed_h_(0.0f), dis_x_(0.0f), dis_y_(0.0f), current_world_(nullptr) {
+Application::Application(LPCWSTR name, unsigned int resolution_width, unsigned int resolution_height) : hwnd_(NULL), is_bad_(false), log_(), graphics_(), bitmaps_(), camera_sprite_data_(), adjust_to_update_(true), scale_(0.0f), fixed_w_(0.0f), fixed_h_(0.0f), dis_x_(0.0f), dis_y_(0.0f), current_world_(nullptr) {
   // Register Window Class
   constexpr LPCWSTR kWindowClassName = L"WispyEngineWindowClass";
 
@@ -73,7 +73,7 @@ Application::~Application() {
   }
 }
 
-void Application::Run(int target_fps) {
+void Application::Run(unsigned int target_fps) {
   // No MJs
   if (is_bad_) return;
 

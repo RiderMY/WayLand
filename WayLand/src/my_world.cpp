@@ -4,7 +4,7 @@
 
 #include "player.h"
 
-MyWorld::MyWorld() : player_sprite_(), object_sprite_(), player_(this, wispy::Vec2(0.0f, 0.0f)), object_(this, wispy::Vec2(1.0f, 0.0f)) {
+MyWorld::MyWorld() : player_sprite_(), object_sprite_(), player_(this, { 0.0f, 0.0f }), object_(this, { 1.0f, 0.0f }) {
   player_sprite_ = GetMainCamera().RegisterSprite("src/test_img.png");
   player_.AddProperty<wispy::SpriteRenderer>();
   player_.GetProperty<wispy::SpriteRenderer>().SetOrder(1);

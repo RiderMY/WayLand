@@ -4,15 +4,20 @@
 
 namespace wispy {
 
-SpriteRenderer::SpriteRenderer(GameObject *parent) : Property(parent), renderer_id_(0), sprite_(), order_(0) { }
+SpriteRenderer::SpriteRenderer(GameObject *parent) : Property(parent), renderer_id_(0u), sprite_(), order_(0) { }
 
 SpriteRenderer::~SpriteRenderer() {
   GetGameObject()->GetWorld()->GetMainCamera().RemoveRenderer(renderer_id_);
 }
 
 void SpriteRenderer::Start() {
-  if (renderer_id_ == 0) {
-    renderer_id_ = GetGameObject()->GetWorld()->GetMainCamera().AddRenderer(GetGameObject()->GetPropertyWeak<SpriteRenderer>());
+  if (renderer_id_ == 0u) {
+    auto property = GetGameObject()->GetPropertyWeak<SpriteRenderer>();
+    if (property.expired()) {
+      // TODO: HANDLE ERROR
+    } else {
+      renderer_id_ = GetGameObject()->GetWorld()->GetMainCamera().AddRenderer(property);
+    }
   }
 }
 

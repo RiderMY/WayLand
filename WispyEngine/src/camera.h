@@ -14,7 +14,7 @@ class Camera : public Property {
 public:
   Camera(GameObject *parent);
 
-  int AddRenderer(std::weak_ptr<SpriteRenderer> renderer);
+  unsigned int AddRenderer(std::weak_ptr<SpriteRenderer> renderer);
   void RemoveRenderer(unsigned int renderer_id);
 
   Sprite RegisterSprite(std::string filename, unsigned int slices_x = 0u, unsigned int slices_y = 0u);

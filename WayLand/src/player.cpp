@@ -9,7 +9,7 @@ void Player::Update(float dt) {
   int vertical = GetInputManager().GetKeyDown(wispy::kDown) - GetInputManager().GetKeyDown(wispy::kUp);
 
   if (horizontal || vertical) {
-    wispy::Vec2 velocity = wispy::Vec2((float) horizontal, (float) vertical);
+    wispy::Vec2 velocity = { (float) horizontal, (float) vertical };
     velocity /= sqrtf(velocity.x * velocity.x + velocity.y * velocity.y);
     velocity *= 5 * dt;
 

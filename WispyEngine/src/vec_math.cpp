@@ -2,20 +2,6 @@
 
 namespace wispy {
 
-Vec2::Vec2() : x(0), y(0) { }
-
-Vec2::Vec2(float x, float y) : x(x), y(y) { }
-
-Vec2::Vec2(const Vec2 &other) {
-  x = other.x;
-  y = other.y;
-}
-
-void Vec2::operator=(const Vec2 &other) {
-  x = other.x;
-  y = other.y;
-}
-
 Vec2 Vec2::operator+(const Vec2 &other) const {
   Vec2 tmp(x + other.x, y + other.y);
   return tmp;

@@ -6,7 +6,8 @@ namespace wispy {
 
 Camera::Camera(GameObject *parent) : Property(parent), renderers_(), sprite_buffer_(), debug_draws_(), unit_size_(1) { }
 
-int Camera::AddRenderer(std::weak_ptr<SpriteRenderer> renderer) {
+unsigned int Camera::AddRenderer(std::weak_ptr<SpriteRenderer> renderer) {
+  if (renderer.expired()) return 0u;
   return renderers_.Add(renderer);
 }
 

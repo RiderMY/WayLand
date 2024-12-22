@@ -10,7 +10,7 @@ class World;
 
 class GameObject {
 public:
-  GameObject(World *world, const Vec2 &position = Vec2());
+  GameObject(World *world, const Vec2 &position = { 0 });
 
   World *GetWorld();
 
