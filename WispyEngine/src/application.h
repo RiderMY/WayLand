@@ -24,7 +24,7 @@ concept WorldDerivative = std::is_base_of_v<World, T>;
 template <WorldDerivative... Worlds>
 class Application : private ApplicationFinderFix {
 public:
-  Application(LPCWSTR name, unsigned int resolution_width, unsigned int resolution_height) : hwnd_(NULL), is_bad_(false), log_(), graphics_(), bitmaps_(), camera_sprite_data_(), adjust_to_update_(true), scale_(0.0f), fixed_w_(0.0f), fixed_h_(0.0f), dis_x_(0.0f), dis_y_(0.0f), current_world_(nullptr), current_world_index_(0ull), target_fps_(0u) {
+  Application(LPCWSTR name, unsigned int resolution_width, unsigned int resolution_height) : hwnd_(NULL), is_bad_(false), log_(), graphics_(), bitmaps_(), camera_sprite_data_(), adjust_to_update_(true), scale_(0.0f), fixed_w_(0.0f), fixed_h_(0.0f), dis_x_(0.0f), dis_y_(0.0f), debug_draw_data_(), is_debug_(false), current_world_(nullptr), current_world_index_(0ull), target_fps_(0u) {
     // Register Window Class
     constexpr LPCWSTR kWindowClassName = L"WispyEngineWindowClass";
 
@@ -195,6 +195,9 @@ public:
             else current_world_->SetCurrentWorldIndex(current_world_index_);
           }
 
+          // Debug-Switching
+          is_debug_ = current_world_->GetDebugMode();
+
           adjust_to_update_ = false;
         }
       }
@@ -256,6 +259,9 @@ private:
     case VK_ESCAPE:
       current_world_->GetInputManager().SetKeyDown(kEscape, is_down);
       break;
+    case VK_OEM_3:
+      current_world_->GetInputManager().SetKeyDown(kBacktick, is_down);
+      break;
     case 0x44:
       current_world_->GetInputManager().SetKeyDown(kD, is_down);
       break;
@@ -298,14 +304,16 @@ private:
       debug_draw_data_ = current_world_->GetMainCamera().GetDebugDrawDataStream();
     }
 
-    for (int i = 0; i < debug_draw_data_.size(); ++i) {
-      switch (debug_draw_data_[i].draw_type) {
-      case DebugDrawer::DrawData::DrawType::kRect:
-        graphics_.DrawRectangle(debug_draw_data_[i].x * scale_ + dis_x_, debug_draw_data_[i].y * scale_ + dis_y_, debug_draw_data_[i].width * scale_, debug_draw_data_[i].height * scale_, D2D1::ColorF(debug_draw_data_[i].color.r, debug_draw_data_[i].color.g, debug_draw_data_[i].color.b));
-        break;
-      case DebugDrawer::DrawData::DrawType::kCircle:
-        graphics_.DrawEllipse(debug_draw_data_[i].x * scale_ + dis_x_, debug_draw_data_[i].y * scale_ + dis_y_, debug_draw_data_[i].radius * scale_, debug_draw_data_[i].radius * scale_, D2D1::ColorF(debug_draw_data_[i].color.r, debug_draw_data_[i].color.g, debug_draw_data_[i].color.b));
-        break;
+    if (is_debug_) {
+      for (int i = 0; i < debug_draw_data_.size(); ++i) {
+        switch (debug_draw_data_[i].draw_type) {
+        case DebugDrawer::DrawData::DrawType::kRect:
+          graphics_.DrawRectangle(debug_draw_data_[i].x * scale_ + dis_x_, debug_draw_data_[i].y * scale_ + dis_y_, debug_draw_data_[i].width * scale_, debug_draw_data_[i].height * scale_, D2D1::ColorF(debug_draw_data_[i].color.r, debug_draw_data_[i].color.g, debug_draw_data_[i].color.b));
+          break;
+        case DebugDrawer::DrawData::DrawType::kCircle:
+          graphics_.DrawEllipse(debug_draw_data_[i].x * scale_ + dis_x_, debug_draw_data_[i].y * scale_ + dis_y_, debug_draw_data_[i].radius * scale_, debug_draw_data_[i].radius * scale_, D2D1::ColorF(debug_draw_data_[i].color.r, debug_draw_data_[i].color.g, debug_draw_data_[i].color.b));
+          break;
+        }
       }
     }
   }
@@ -318,6 +326,7 @@ private:
     if (target_fps_ != 0u) current_world_->SetTargetFPS(target_fps_);
     current_world_index_ = world_index;
     current_world_->SetCurrentWorldIndex(world_index);
+    current_world_->SetDebugMode(is_debug_);
     return true;
   }
 
@@ -329,8 +338,7 @@ private:
 
   template <WorldDerivative First, WorldDerivative... Rest>
   bool FindAndSetCurrentWorld(unsigned long long world_index, unsigned long long i, unsigned int wtf) {
-    if (i == 0ull) return CreateWorld<First>(world_index);
-    else return FindAndSetCurrentWorld<Rest...>(world_index, i - 1ull, 0u);
+    return i == 0ull ? CreateWorld<First>(world_index) : FindAndSetCurrentWorld<Rest...>(world_index, i - 1ull, 0u);
   }
 
   HWND hwnd_;
@@ -344,6 +352,7 @@ private:
   bool adjust_to_update_;
   float scale_, fixed_w_, fixed_h_, dis_x_, dis_y_;
   std::vector<DebugDrawer::DrawData> debug_draw_data_;
+  bool is_debug_;
 
   std::unique_ptr<World> current_world_;
   unsigned long long current_world_index_;

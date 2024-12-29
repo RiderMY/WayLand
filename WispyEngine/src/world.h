@@ -24,6 +24,9 @@ public:
   void SetCurrentWorldIndex(unsigned long long index);
   unsigned long long GetCurrentWorldIndex() const;
 
+  void SetDebugMode(bool debug_mode);
+  bool GetDebugMode() const;
+
 private:
   GameObject main_camera_;
   GameObject input_manager_;
@@ -31,6 +34,7 @@ private:
   std::vector<std::string> world_log_buffer_;
   unsigned int target_fps_;
   unsigned long long current_world_index_;
+  bool debug_mode_;
 };
 
 }

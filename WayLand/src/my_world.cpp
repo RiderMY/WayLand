@@ -4,7 +4,7 @@
 
 #include "player.h"
 
-MyWorld::MyWorld() : player_sprite_(), object_sprite_(), player_(this, { 0.0f, 0.0f }), object_(this, { 1.0f, 0.0f }) {
+MyWorld::MyWorld() : player_sprite_(), object_sprite_(), player_(this, { 0.0f, 0.0f }), object_(this, { 1.0f, 0.0f }), toggle_debug_(false) {
   player_sprite_ = GetMainCamera().RegisterSprite("src/test_img.png");
   player_.AddProperty<wispy::SpriteRenderer>();
   player_.GetProperty<wispy::SpriteRenderer>().SetOrder(1);
@@ -31,6 +31,13 @@ bool MyWorld::Update(float dt) {
   if (GetInputManager().GetKeyDown(wispy::kD)) {
     SetCurrentWorldIndex(0ull);
   }
+
+  if (GetInputManager().GetKeyDown(wispy::kBacktick)) {
+    if (!toggle_debug_) {
+      SetDebugMode(!GetDebugMode());
+      toggle_debug_ = true;
+    }
+  } else toggle_debug_ = false;
 
   player_.GetProperty<Player>().Update(dt);
 

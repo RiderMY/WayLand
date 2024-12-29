@@ -2,7 +2,7 @@
 
 namespace wispy {
 
-World::World() : main_camera_(this), input_manager_(this), world_log_buffer_(), target_fps_(0u), current_world_index_(0u) {
+World::World() : main_camera_(this), input_manager_(this), world_log_buffer_(), target_fps_(0u), current_world_index_(0u), debug_mode_(false) {
   main_camera_.AddProperty<Camera>();
   input_manager_.AddProperty<InputManager>();
 }
@@ -45,6 +45,14 @@ void World::SetCurrentWorldIndex(unsigned long long index) {
 
 unsigned long long World::GetCurrentWorldIndex() const {
   return current_world_index_;
+}
+
+void World::SetDebugMode(bool debug_mode) {
+  debug_mode_ = debug_mode;
+}
+
+bool World::GetDebugMode() const {
+  return debug_mode_;
 }
 
 }

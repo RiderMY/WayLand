@@ -13,4 +13,6 @@ private:
   wispy::Sprite object_sprite_;
   wispy::GameObject player_;
   wispy::GameObject object_;
+  
+  bool toggle_debug_;
 };
