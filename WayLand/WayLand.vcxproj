@@ -129,6 +129,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\my_menu.cpp" />
     <ClCompile Include="src\my_world.cpp" />
     <ClCompile Include="src\player.cpp" />
     <ClCompile Include="src\WayLand.cpp" />
@@ -139,6 +140,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\my_menu.h" />
     <ClInclude Include="src\my_world.h" />
     <ClInclude Include="src\player.h" />
   </ItemGroup>

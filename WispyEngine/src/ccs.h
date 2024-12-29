@@ -6,7 +6,6 @@
 namespace wispy {
 
 // COAT-CHECKING SYSTEM
-// one file b/c implementation for templates
 template <typename T>
 class CCS {
 public:

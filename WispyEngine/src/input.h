@@ -7,7 +7,7 @@
 namespace wispy {
 
 enum Key {
-  kLeft, kRight, kUp, kDown, kEscape, kSize
+  kLeft, kRight, kUp, kDown, kEscape, kD, kF, kSize
 };
 
 class InputManager : public Property {

@@ -23,6 +23,15 @@ MyWorld::MyWorld() : player_sprite_(), object_sprite_(), player_(this, { 0.0f, 0
 bool MyWorld::Update(float dt) {
   if (GetInputManager().GetKeyDown(wispy::kEscape)) return false;
 
+  if (GetInputManager().GetKeyDown(wispy::kF)) {
+    AppendToWorldLog("do something");
+    SetTargetFPS(120u);
+  }
+
+  if (GetInputManager().GetKeyDown(wispy::kD)) {
+    SetCurrentWorldIndex(0ull);
+  }
+
   player_.GetProperty<Player>().Update(dt);
 
   return true;

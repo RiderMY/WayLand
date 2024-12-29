@@ -15,9 +15,22 @@ public:
   Camera &GetMainCamera();
   InputManager &GetInputManager();
 
+  void AppendToWorldLog(const std::string &msg);
+  std::vector<std::string> GetWorldLogBuffer();
+
+  void SetTargetFPS(unsigned int target_fps);
+  unsigned int GetTargetFPS() const;
+
+  void SetCurrentWorldIndex(unsigned long long index);
+  unsigned long long GetCurrentWorldIndex() const;
+
 private:
   GameObject main_camera_;
   GameObject input_manager_;
+
+  std::vector<std::string> world_log_buffer_;
+  unsigned int target_fps_;
+  unsigned long long current_world_index_;
 };
 
 }

@@ -14,24 +14,24 @@ public:
 
   World *GetWorld();
 
-  template<typename T>
+  template <typename T>
   void AddProperty() requires std::is_base_of_v<Property, T> {
     properties_.Add(std::make_shared<T>(this));
     properties_.Get<T>().lock()->DoYoThang();
     properties_.Get<T>().lock()->Start();
   }
 
-  template<typename T>
+  template <typename T>
   T &GetProperty() requires std::is_base_of_v<Property, T> {
     return *properties_.Get<T>().lock();
   }
 
-  template<typename T>
+  template <typename T>
   std::weak_ptr<T> GetPropertyWeak() requires std::is_base_of_v<Property, T> {
     return properties_.Get<T>();
   }
 
-  template<typename T>
+  template <typename T>
   void RemoveProperty() requires std::is_base_of_v<Property, T> {
     properties_.Remove<T>();
   }
