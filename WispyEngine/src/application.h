@@ -296,7 +296,7 @@ private:
     // Drawing Sprites
     for (int i = 0; i < camera_sprite_data_.size(); ++i) {
       if (camera_sprite_data_[i].sprite_id == 0u) continue;
-      graphics_.DrawBitmap(bitmaps_[camera_sprite_data_[i].sprite_id - 1], camera_sprite_data_[i].x * scale_ + dis_x_, camera_sprite_data_[i].y * scale_ + dis_y_, static_cast<float>(scale_), static_cast<float>(scale_), camera_sprite_data_[i].slices_x, camera_sprite_data_[i].slices_y, camera_sprite_data_[i].index_x, camera_sprite_data_[i].index_y);
+      graphics_.DrawBitmap(bitmaps_[camera_sprite_data_[i].sprite_id - 1u], camera_sprite_data_[i].x * scale_ + dis_x_, camera_sprite_data_[i].y * scale_ + dis_y_, static_cast<float>(scale_), static_cast<float>(scale_), camera_sprite_data_[i].slices_x, camera_sprite_data_[i].slices_y, camera_sprite_data_[i].index_x, camera_sprite_data_[i].index_y);
     }
 
     // Debug Draw
