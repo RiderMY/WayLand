@@ -7,7 +7,7 @@
 
 namespace wispy {
 
-// FILTERED HETEROGENOUS LIST
+// FILTERED HETEROGENEOUS LIST
 template <typename Filter>
 class FHL {
 public:
