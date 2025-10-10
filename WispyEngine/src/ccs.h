@@ -15,8 +15,9 @@ public:
     data_.clear();
   }
 
-  int Add(T obj) {
-    data_[next_token_] = obj;
+  template <typename U>
+  int Add(U&& obj) {
+    data_[next_token_] = std::forward<U>(obj);
     return next_token_++;
   }
 
