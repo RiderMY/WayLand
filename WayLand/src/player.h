@@ -8,6 +8,4 @@ public:
   Player(wispy::GameObject *parent);
 
   void Update(float dt);
-
-  void DebugDraw(wispy::DebugDrawer &dd);
 };

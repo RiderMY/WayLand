@@ -8,7 +8,7 @@
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hInstancePrev, LPSTR lpCmdLine, int nCmdShow) {
   wispy::Application<MyMenu, MyWorld> app(L"WayLand", 320u, 180u);
 
-  app.Run(60u);
+  app.Run(120u);
 
   return 0;
 }

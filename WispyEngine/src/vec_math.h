@@ -16,4 +16,8 @@ struct Vec2 {
   float x, y;
 };
 
+float Dot(Vec2 u, Vec2 v);
+
+float Cross(Vec2 u, Vec2 v);
+
 }

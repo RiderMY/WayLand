@@ -14,9 +14,9 @@ public:
 
   World *GetWorld();
 
-  template <typename T>
-  void AddProperty() requires std::is_base_of_v<Property, T> {
-    properties_.Add(std::make_shared<T>(this));
+  template <typename T, typename... Args>
+  void AddProperty(Args&&... args) requires std::is_base_of_v<Property, T> {
+    properties_.Add(std::make_shared<T>(this, std::forward<Args>(args)...));
     properties_.Get<T>().lock()->DoYoThang();
     properties_.Get<T>().lock()->Start();
   }

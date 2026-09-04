@@ -9,10 +9,12 @@ public:
   bool Update(float dt);
 
 private:
-  wispy::Sprite player_sprite_;
   wispy::Sprite object_sprite_;
-  wispy::GameObject player_;
   wispy::GameObject object_;
+  wispy::GameObject object_2_;
+
+  wispy::Sprite player_sprite_;
+  wispy::GameObject player_;
   
   bool toggle_debug_;
 };

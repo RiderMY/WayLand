@@ -9,6 +9,7 @@ namespace wispy {
 class World {
 public:
   World();
+  virtual ~World() = default;
 
   virtual bool Update(float dt) = 0;
 

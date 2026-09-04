@@ -190,7 +190,7 @@ public:
           }
 
           // World-Switching
-          if (current_world_->GetCurrentWorldIndex() != current_world_index_) {
+          if (current_world_->GetCurrentWorldIndex() != current_world_index_) { // make this better, if we set it to current world index, it should restart the world
             if (SetCurrentWorld(current_world_->GetCurrentWorldIndex())) graphics_cleanup_needed = true;
             else current_world_->SetCurrentWorldIndex(current_world_index_);
           }
@@ -279,7 +279,7 @@ private:
         if (!sprite.second.expired()) *sprite.second.lock() = static_cast<unsigned int>(bitmaps_.size());
         else {
           log_.Append("[ERROR] ID assignment to sprite for " + sprite.first + " failed!");
-          bitmaps_.erase(bitmaps_.end());
+          bitmaps_.pop_back();
         }
       } else {
         log_.Append("[ERROR] Sprite registration to " + sprite.first + " failed!");
@@ -296,7 +296,7 @@ private:
     // Drawing Sprites
     for (int i = 0; i < camera_sprite_data_.size(); ++i) {
       if (camera_sprite_data_[i].sprite_id == 0u) continue;
-      graphics_.DrawBitmap(bitmaps_[camera_sprite_data_[i].sprite_id - 1u], camera_sprite_data_[i].x * scale_ + dis_x_, camera_sprite_data_[i].y * scale_ + dis_y_, static_cast<float>(scale_), static_cast<float>(scale_), camera_sprite_data_[i].slices_x, camera_sprite_data_[i].slices_y, camera_sprite_data_[i].index_x, camera_sprite_data_[i].index_y);
+      graphics_.DrawBitmap(bitmaps_[static_cast<unsigned long long>(camera_sprite_data_[i].sprite_id) - 1ull], camera_sprite_data_[i].x * scale_ + dis_x_, camera_sprite_data_[i].y * scale_ + dis_y_, static_cast<float>(scale_), static_cast<float>(scale_), camera_sprite_data_[i].slices_x, camera_sprite_data_[i].slices_y, camera_sprite_data_[i].index_x, camera_sprite_data_[i].index_y);
     }
 
     // Debug Draw

@@ -57,6 +57,12 @@
     <ClInclude Include="src\debug_draw.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\collider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game_math.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\application.cpp">
@@ -93,6 +99,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\debug_draw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\collider.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

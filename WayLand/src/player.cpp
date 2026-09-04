@@ -1,5 +1,6 @@
 #include "player.h"
 
+#include "collider.h"
 #include "world.h"
 
 Player::Player(wispy::GameObject *parent) : Property(parent) { }
@@ -13,11 +14,6 @@ void Player::Update(float dt) {
     velocity /= sqrtf(velocity.x * velocity.x + velocity.y * velocity.y);
     velocity *= 5 * dt;
 
-    SetPosition(GetPosition() + velocity);
+    GetGameObject()->GetProperty<wispy::Collider>().Move(velocity);
   }
-}
-
-void Player::DebugDraw(wispy::DebugDrawer &dd) {
-  dd.DrawRect(4.0f, 3.0f, 1.0f, 4.0f, { 1.0f, 0.0f, 0.0f });
-  dd.DrawCircle(10.0f, 6.0f, 0.5f, { 0.0f, 1.0f, 0.0f });
 }

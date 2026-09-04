@@ -46,4 +46,12 @@ bool Vec2::operator==(const Vec2 &other) const {
   return x == other.x && y == other.y;
 }
 
+float Dot(Vec2 u, Vec2 v) {
+  return u.x * v.x + u.y * v.y;
+}
+
+float Cross(Vec2 u, Vec2 v) {
+  return u.x * v.y - u.y * v.x;
+}
+
 }

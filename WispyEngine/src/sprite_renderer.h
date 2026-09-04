@@ -7,7 +7,7 @@ namespace wispy {
 
 class SpriteRenderer : public Property {
 public:
-  SpriteRenderer(GameObject *parent);
+  SpriteRenderer(GameObject *parent, Sprite sprite, int order = 0);
   ~SpriteRenderer();
 
   void Start();
